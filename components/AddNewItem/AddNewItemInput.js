@@ -5,12 +5,14 @@ import {
   TouchableOpacity,
   StyleSheet,
 } from "react-native";
-import React, { useRef } from "react";
+import React from "react";
 import { FontAwesome } from '@expo/vector-icons';
 
-const AddNewItemInput = ({shoppingItem, handleInputChange,handleItemAdd,}) => {
- 
-
+const AddNewItemInput = ({
+  shoppingItem,
+  handleInputChange,
+  handleItemAdd,
+}) => {
   return (
     <View style={styles.addItemWrapper}>
       <TextInput
@@ -19,8 +21,6 @@ const AddNewItemInput = ({shoppingItem, handleInputChange,handleItemAdd,}) => {
         value={shoppingItem}
         onChangeText={handleInputChange}
         onSubmitEditing={()=> handleItemAdd(shoppingItem)}
-        autoFocus={true}
-        
       />
       <TouchableOpacity onPress={() => handleItemAdd(shoppingItem)}>
         <View style={styles.addItemButtonWrapper}>
@@ -38,7 +38,7 @@ export default AddNewItemInput;
 const styles = StyleSheet.create({
   addItemWrapper: {
     width: "100%",
-    marginTop: 0,
+    marginTop: 20,
     flexDirection: "row",
     justifyContent: "space-around",
     alignItems: "center",
@@ -55,14 +55,12 @@ const styles = StyleSheet.create({
     borderWidth: 1,
   },
   newItemInput: {
-    paddingVertical: 10,
-    paddingHorizontal: 10,
+    paddingVertical: 20,
+    paddingHorizontal: 20,
     backgroundColor: "#fff",
     borderColor: "#c0c0c0",
     borderWidth: 1,
-    width: 270,
-    fontSize:17,
-    fontWeight:"600",
+    width: 300,
     borderRadius: 15,
   },
 });

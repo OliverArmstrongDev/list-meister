@@ -17,7 +17,7 @@ export default function App() {
         <NavigationContainer>
           <StackNavigator />
         </NavigationContainer>
-  </ShoppingListContextProvider>
+    </ShoppingListContextProvider>
     
   );
 }

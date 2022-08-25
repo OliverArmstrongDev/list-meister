@@ -1,5 +1,5 @@
 import { useNavigation } from "@react-navigation/native";
-import { useState, useContext, useEffect, useRef } from "react";
+import { useState, useContext, useEffect } from "react";
 import { FontAwesome } from "@expo/vector-icons";
 import {
   StyleSheet,
@@ -18,63 +18,35 @@ import { ShoppingListContext } from "../contexts/ShoppingListProvider";
 export default function HomeScreen() {
   const navigation = useNavigation();
   const [showAddNewInput, setShowAddNewInput] = useState(false);
-  const {
-    state,
-    saveListsToLocalStorage,
-    getAllDataFromLocalStorage,
-    clearAsyncStorage,
-  } = useContext(ShoppingListContext);
+  const { dispatch, state } = useContext(ShoppingListContext);
 
   useEffect(() => {
-    getAllDataFromLocalStorage();
-    // clearAsyncStorage(); //future feature
+    dispatch({
+      type: "COPY_SELECTED_ITEMS_TO_CURRENT_LIST",
+      payload: [...state.masterList.filter((item) => item.isSelected)],
+    });
   }, []);
-
-  useEffect(() => {
-    state.firstLoad &&
-      saveListsToLocalStorage(
-        "currentList",
-        state.currentList,
-        !state.currentList.length ? true : false
-      );
-  }, [state.currentList, state.firstLoad]);
 
   return (
     <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
       <View style={styles.container}>
-        <View style={styles.header}>
-        <TouchableOpacity
+        <View>
+          <Pressable
             style={styles.button}
             onPress={() => navigation.navigate("Master List")}
-           > 
-            <Text style={styles.buttonText}>
-              Choose item(s) from Master List
-            </Text>
+          >
+            <Text style={styles.buttonText}>Choose item(s) from Master List</Text>
+          </Pressable>
+        </View>
+        <View style={styles.buttonAddInputWrapper}>
+          <TouchableOpacity style={styles.addNewLabelWrapper} onPress={() => setShowAddNewInput(!showAddNewInput)}>
+            <Text style={styles.addNewLabelText}>{showAddNewInput ? "Done" : "Add one-off item to Current List"}</Text>
+           {!showAddNewInput && <FontAwesome name="plus" size={20} color="black" />}
           </TouchableOpacity>
-
-          <View style={styles.buttonAddInputWrapper}>
-            <TouchableOpacity
-              style={styles.addNewLabelWrapper}
-              onPress={() => setShowAddNewInput(!showAddNewInput)}
-            >
-              <Text style={styles.addNewLabelText}>
-                {showAddNewInput ? "Done" : "Add one-off item to Current List"}
-              </Text>
-              {!showAddNewInput && (
-                <FontAwesome name="plus" size={22} color="white" />
-              )}
-            </TouchableOpacity>
-          </View>
-          {/* Add items section */}
-        {showAddNewInput && (
-          <AddNewItemSection
-            setShowAddNewInput={setShowAddNewInput}
-            isMaster={false}
-          />
-        )}
         </View>
 
-        
+        {/* Add items section */}
+        {showAddNewInput && <AddNewItemSection setShowAddNewInput={setShowAddNewInput} isMaster={false} />}
         {/* list of current items */}
         <ShoppingListSection listData={state.currentList} isMaster={false} />
       </View>
@@ -88,17 +60,10 @@ const styles = StyleSheet.create({
     backgroundColor: "#E5E7EA",
     alignItems: "center",
   },
-  header: {
-    width: "100%",
-    backgroundColor: "#2466B8",
-    marginBottom: 20,
-    borderBottomRightRadius:50,
-    borderBottomLeftRadius: 50
-  },
 
   addNewLabelText: {
     fontSize: 18,
-    color: "white",
+    color: "blue",
     paddingRight: 10,
   },
   listWrapper: {
@@ -149,19 +114,14 @@ const styles = StyleSheet.create({
     paddingHorizontal: 19,
     borderRadius: 4,
     elevation: 3,
-    backgroundColor: "#E5E7EA",
-    marginVertical: 25,
-    marginHorizontal: 40,
-    shadowColor: '#171717',
-    shadowOffset: {width: -2, height: 4},
-    shadowOpacity: 0.5,
-    shadowRadius: 9,
+    backgroundColor: "black",
+    marginVertical: 25
   },
   buttonText: {
     fontSize: 15,
     lineHeight: 18,
     fontWeight: "bold",
     letterSpacing: 0.25,
-    color: "black",
+    color: "white",
   },
 });

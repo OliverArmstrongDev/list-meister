@@ -12,7 +12,7 @@ const AddNewItemSection = ({isMaster, setShowAddNewInput}) => {
     if (!shoppingItem || text.length <= 1) {
       Alert.alert(
         "Can't add item!",
-        "List items must be 2 or more characters...",
+        "Shopping list items must be 2 or more characters...",
         [{ text: "Understood" }]
       );
       return;
@@ -33,13 +33,15 @@ const AddNewItemSection = ({isMaster, setShowAddNewInput}) => {
 
   return (
     <>
-      
-      <View style={styles.newItemSectionWrapper}>
       <AddNewItemInput
         shoppingItem={shoppingItem}
         handleInputChange={handleInputChange}
         handleItemAdd={handleItemAdd}
       />
+      <View style={styles.newItemSectionWrapper}>
+        <Text style={styles.newItemLabel}>
+          {shoppingItem && `Add item: ${shoppingItem}`}
+        </Text>
       </View>
     </>
   );
@@ -49,6 +51,12 @@ export default AddNewItemSection;
 
 const styles = StyleSheet.create({
   newItemSectionWrapper: {
-    marginBottom: 20,
+    marginTop: 10,
+  },
+  newItemLabel: {
+    fontSize: 20,
+    fontWeight: "bold",
+    paddingHorizontal: 20,
+    marginBottom: 15,
   },
 });

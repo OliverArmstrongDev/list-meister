@@ -5,7 +5,8 @@ import {
   TouchableOpacity,
   Pressable,
   Keyboard,
-  TouchableWithoutFeedback
+  TouchableWithoutFeedback,
+  Button,
 } from "react-native";
 import React, { useContext, useEffect, useState } from "react";
 import { FontAwesome } from "@expo/vector-icons";
@@ -18,33 +19,23 @@ import { useNavigation } from "@react-navigation/native";
 
 const MasterList = () => {
   const [showAddNewInput, setShowAddNewInput] = useState(false);
-  const { dispatch, state, saveListsToLocalStorage } = useContext(ShoppingListContext);
+  const { dispatch, state } = useContext(ShoppingListContext);
   const navigation = useNavigation();
 
-  useEffect(()=> {
-    state.firstLoad && saveListsToLocalStorage("masterList", state.masterList, !state.masterList.length? true : false);
-    },[state.masterList, state.firstLoad]);
+  useEffect(() => {
+    // console.log('ue', state);
+  }, [state]);
 
-  const handleAddSelected = async () => {
-    await dispatch({
+  const handleAddSelected = () => {
+    dispatch({
       type: "COPY_SELECTED_ITEMS_TO_CURRENT_LIST",
       payload: [...state.masterList.filter((item) => item.isSelected)],
     });
-    //go back to home screen
     navigation.navigate("Current List");
   };
   return (
     <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
       <View style={styles.container}>
-      <View style={styles.header}>
-        {/* <Divider text="Master List" mb={0} /> */}
-        <View style={styles.buttonAddWrapper}>
-          <TouchableOpacity style={styles.button} onPress={() => handleAddSelected()}>
-            <Text style={styles.buttonText}>
-              {'Add selected to "Current List"'}
-            </Text>
-          </TouchableOpacity>
-        </View>
         <View style={styles.buttonAddInputWrapper}>
           <TouchableOpacity
             style={styles.addNewLabelWrapper}
@@ -54,12 +45,20 @@ const MasterList = () => {
               {showAddNewInput ? "Done" : "Add new item to Master List"}
             </Text>
             {!showAddNewInput && (
-              <FontAwesome name="plus" size={22} color="white" />
+              <FontAwesome name="plus" size={20} color="black" />
             )}
           </TouchableOpacity>
         </View>
+
         {/* Add items section */}
         {showAddNewInput && <AddNewItemSection setShowAddNewInput={setShowAddNewInput} isMaster={true} />}
+        <Divider text="Master List" mb={0} />
+        <View style={styles.buttonAddWrapper}>
+          <Pressable style={styles.button} onPress={() => handleAddSelected()}>
+            <Text style={styles.buttonText}>
+              {'Add selected items to "Current List"'}
+            </Text>
+          </Pressable>
         </View>
         {/* list of current items */}
         <ShoppingListSection
@@ -80,19 +79,12 @@ const styles = StyleSheet.create({
     backgroundColor: "#E5E7EA",
     alignItems: "center",
   },
-  header: {
-    width: "100%",
-    backgroundColor: "#2466B8",
-    marginBottom: 20,
-    borderBottomRightRadius:50,
-    borderBottomLeftRadius: 50
-  },
   buttonAddWrapper: {
-    // marginBottom: 15,
+    marginBottom: 15,
   },
   buttonAddInputWrapper: {
-    // marginTop: 35,
-    marginBottom: 28,
+    marginTop: 35,
+    marginBottom: 18,
     width: "100%",
   },
   addNewLabelWrapper: {
@@ -102,7 +94,7 @@ const styles = StyleSheet.create({
   },
   addNewLabelText: {
     fontSize: 18,
-    color: "white",
+    color: "blue",
     paddingRight: 10,
   },
   buttonAddSelected: {
@@ -120,19 +112,14 @@ const styles = StyleSheet.create({
     paddingHorizontal: 19,
     borderRadius: 4,
     elevation: 3,
-    backgroundColor: "#E5E7EA",
+    backgroundColor: "black",
     marginVertical: 25,
-    marginHorizontal: 40,
-    shadowColor: '#171717',
-    shadowOffset: {width: -2, height: 4},
-    shadowOpacity: 0.5,
-    shadowRadius: 9,
   },
   buttonText: {
     fontSize: 15,
     lineHeight: 18,
     fontWeight: "bold",
     letterSpacing: 0.25,
-    color: "black",
+    color: "white",
   },
 });

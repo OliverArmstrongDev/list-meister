@@ -11,6 +11,11 @@ const StackNavigator = () => {
         <Stack.Screen name='Current List' component={HomeScreen} />
         <Stack.Screen name='Master List' component={MasterList} />
       </Stack.Group>
+      <Stack.Group screenOptions={{presentation: "modal"}}>
+        {/* <Stack.Screen name='Master List' component={MasterList} /> */}
+        
+      </Stack.Group>
+    
   </Stack.Navigator>
   )
 }
