@@ -90,7 +90,7 @@ export const ShoppingListContextProvider = ({ children }) => {
     try {
       const jsonValue = emptyList ? "[]" : JSON.stringify(value);
       await AsyncStorage.setItem(key, jsonValue);
-      console.log("Saved to Local", key, jsonValue);
+      // console.log("Saved to Local", key, jsonValue);
     } catch (e) {
       console.log(e);
     }

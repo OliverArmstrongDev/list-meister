@@ -1,6 +1,6 @@
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import { MaterialIcons, FontAwesome } from "@expo/vector-icons";
-import React, { useContext, useEffect, useState } from "react";
+import { MaterialIcons, FontAwesome, MaterialCommunityIcons } from "@expo/vector-icons";
+import React, { useContext,  useState } from "react";
 import { ShoppingListContext } from "../contexts/ShoppingListProvider";
 
 const Item = ({ item, isMaster, isSelected }) => {
@@ -25,11 +25,12 @@ const Item = ({ item, isMaster, isSelected }) => {
       <View style={styles.listItemLeft}>
         <TouchableOpacity onPress={() => handleChecked(item)}>
           {checked ? (
-            <FontAwesome name="check-square-o" size={35} color="green" />
+            <FontAwesome name="check-square-o" size={34} color="green" />
           ) : (
-            <FontAwesome name="square-o" size={35} color="black" />
+            <FontAwesome name="square-o" size={34} color="black" />
           )}
         </TouchableOpacity>
+      <MaterialCommunityIcons style={checked ? styles.dragHandleChecked : styles.dragHandle } name="drag-horizontal" size={24} color="#737574" />
       </View>
       <Text
         style={[styles.listItemText, !isMaster && checked && styles.checked]}
@@ -57,6 +58,14 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "space-between",
     marginHorizontal: 20,
+  },
+  dragHandle: {
+   marginLeft:25,
+   marginRight: -50,
+  },
+  dragHandleChecked: {
+   marginLeft:23,
+   marginRight: -50,
   },
   listItemLeft: {
     flexDirection: "row",
